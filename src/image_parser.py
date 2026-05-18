@@ -1,11 +1,9 @@
 """Parser de imágenes de documentos legales."""
 import base64
 import os
-from openai import OpenAI
-from dotenv import load_dotenv
+from src.config import get_llm
 
-load_dotenv()
-client = OpenAI()
+client = get_llm()
 
 
 def encode_image(image_path: str) -> str:

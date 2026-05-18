@@ -1,11 +1,8 @@
 """
 Agent para contextualizar el contrato y la adenda.
 """
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from dotenv import load_dotenv
-
-load_dotenv()
+from src.config import get_llm
 
 
 class ContextualizationAgent:
@@ -15,7 +12,7 @@ class ContextualizationAgent:
 
     def __init__(self):
         # Usamos temperature 0 para que el análisis sea determinista y profesional
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0)
+        self.llm = get_llm()
 
     def get_context_map(self, contract_text: str, amendment_text: str) -> str:
         """
