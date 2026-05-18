@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from src.image_parser import parse_image
 from src.agents.contextualization_agent import ContextualizationAgent
 from src.agents.extraction_agent import ExtractionAgent
+from src.utils.logger import logger
 
 load_dotenv()
 
@@ -22,20 +23,20 @@ def run_contract_pipeline(original_path: str, amendment_path: str):
         public_key=os.getenv("LANGFUSE_PUBLIC_KEY"),
     )
 
-    print("🎬 Empezando el pipeline de análisis legal autónomo...")
+    logger.info("🎬 Empezando el pipeline de análisis legal autónomo...")
 
-    print("🎨 Parsea el contrato original...")
+    logger.info("🎨 Parsea el contrato original...")
     original_text = parse_image(original_path)
 
-    print("🎨 Parsea la adenda...")
+    logger.info("🎨 Parsea la adenda...")
     amendment_text = parse_image(amendment_path)
 
-    print("🎨 Contextualiza el contrato y la adenda...")
+    logger.info("🎨 Contextualiza el contrato y la adenda...")
     contextualization_agent = ContextualizationAgent()
     context_map = contextualization_agent.get_context_map(
         original_text, amendment_text)
 
-    print("🔍 Extrae los cambios estructurados...")
+    logger.info("🔍 Extrae los cambios estructurados...")
     extraction_agent = ExtractionAgent()
 
     # This returns a validated ContractChangeOutput Pydantic object
@@ -45,5 +46,5 @@ def run_contract_pipeline(original_path: str, amendment_path: str):
         context_map=context_map
     )
 
-    print("✨ Pipeline completado con éxito!")
+    logger.info("✨ Pipeline completado con éxito!")
     return validated_output
